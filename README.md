@@ -1,7 +1,7 @@
 # smooth_dem
 Scripts to smooth DEM and reduce pimples/artifacts
 
-Files
+Files Below:
 
 smooth_dem.py: The main python script that smooths a DEM using a Gaussian Blur.
 
