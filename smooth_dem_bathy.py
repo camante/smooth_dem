@@ -46,7 +46,7 @@ def gaussian_blur(in_array, size):
     g = np.exp(-(x**2 / float(size) + y**2 / float(size)))
     g = (g / g.sum()).astype(in_array.dtype)
     # do the Gaussian blur
-    return fftconvolve(padded_array, g, mode='valid')
+    return fftconvolve(padded_array, g, mode='valid', cache=False)
 
 # Function to read the original file's projection:
 def GetGeoInfo(FileName):
