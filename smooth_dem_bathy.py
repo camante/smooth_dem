@@ -135,12 +135,17 @@ if __name__ == '__main__':
 
     elev_g = gdal.Open(elev) #
     elev_array = elev_g.GetRasterBand(1).ReadAsArray(0,0,xsize,ysize) 
+    mask_array = elev_array
+    elev_array = None
     #Set topo values to zero
-    elev_array[elev_array > 0] = 0
+    mask_array[mask_array > 0] = 0
     print "loaded input dem"
 
     #Perform smoothing
-    smooth_elev=gaussian_blur(elev_array, smooth_factor)
+    smooth_elev=gaussian_blur(mask_array, smooth_factor)
+    mask_array[mask_array < 0] = 1
+    smooth_elev = smooth_elev * mask_array
+    mask_array = None
     print "smoothed array"
     
     #Reload original array and merge the topo with the smoothed bathy
@@ -148,6 +153,7 @@ if __name__ == '__main__':
     elev_array[elev_array < 0] = 0
     smoothed_array = smooth_elev + elev_array
     elev_g = elev_array = smooth_elev = None
+
     #Export Tif
     driver = gdal.GetDriverByName('GTiff')
     CreateGeoTiff(output_name, smoothed_array, driver, xsize, ysize, GeoT, Projection, DataType)
