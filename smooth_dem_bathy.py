@@ -139,7 +139,7 @@ if __name__ == '__main__':
             smooth_factor = sys.argv[i+1]
             i = i + 1
 
-        if arg == '-i':
+        elif arg == '-i':
             in_list = sys.argv[i+1]
             i = i + 1
 
