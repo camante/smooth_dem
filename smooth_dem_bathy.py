@@ -37,7 +37,8 @@ smooth_dem_bathy.py v.%s
 def open_file_list(in_list, smooth_factor):
     il = open(in_list, 'r')
     for line in il:
-        proc_elev(line.strip(), smooth_factor)
+        if line[0] != "#":
+            proc_elev(line.strip(), smooth_factor)
     il.close()
 
 def gaussian_blur(in_array, size):
