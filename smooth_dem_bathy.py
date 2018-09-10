@@ -3,11 +3,13 @@ import os
 import sys
 import numpy as np
 from scipy.signal import fftconvolve
+from scipy.signal import convolve
+import scipy.fftpack._fftpack as sff
 from gdalconst import *
 from osgeo import osr
 from osgeo import gdal
 
-_version = "0.0.2"
+_version = "0.0.3"
 
 _license = """
 version %s
@@ -41,12 +43,18 @@ def open_file_list(in_list, smooth_factor):
 def gaussian_blur(in_array, size):
     # expand in_array to fit edge of kernel
     padded_array = np.pad(in_array, size, 'symmetric')
+    array_size = in_array.size
     # build kernel
     x, y = np.mgrid[-size:size + 1, -size:size + 1]
     g = np.exp(-(x**2 / float(size) + y**2 / float(size)))
     g = (g / g.sum()).astype(in_array.dtype)
+    in_array = None
     # do the Gaussian blur
-    return fftconvolve(padded_array, g, mode='valid', cache=False)
+    if array_size < 50000000:
+        return fftconvolve(padded_array, g, mode='valid')
+    else:
+        print "Switching to convolve"
+        return convolve(padded_array, g, mode='valid')
 
 # Function to read the original file's projection:
 def GetGeoInfo(FileName):
