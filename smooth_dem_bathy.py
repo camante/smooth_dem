@@ -50,7 +50,7 @@ def gaussian_blur(in_array, size):
     g = (g / g.sum()).astype(in_array.dtype)
     in_array = None
     # do the Gaussian blur
-    if array_size < 50000000:
+    if array_size < 70000000:
         return fftconvolve(padded_array, g, mode='valid')
     else:
         print "Switching to convolve"
