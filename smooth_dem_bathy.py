@@ -44,7 +44,6 @@ def open_file_list(in_list, smooth_factor):
 def gaussian_blur(in_array, size):
     # expand in_array to fit edge of kernel
     padded_array = np.pad(in_array, size, 'symmetric')
-    array_size = in_array.size
     # build kernel
     x, y = np.mgrid[-size:size + 1, -size:size + 1]
     g = np.exp(-(x**2 / float(size) + y**2 / float(size)))
