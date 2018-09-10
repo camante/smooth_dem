@@ -51,11 +51,12 @@ def gaussian_blur(in_array, size):
     g = (g / g.sum()).astype(in_array.dtype)
     in_array = None
     # do the Gaussian blur
-    if array_size < 70000000:
-        return fftconvolve(padded_array, g, mode='valid')
-    else:
-        print "Switching to convolve"
-        return convolve(padded_array, g, mode='valid')
+    try:
+        out_array = fftconvolve(padded_array, g, mode='valid')
+    except:
+        print('switching to convolve')
+        out_array = convolve(padded_array, g, mode='valid')
+    return out_array
 
 # Function to read the original file's projection:
 def GetGeoInfo(FileName):
